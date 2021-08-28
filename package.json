@@ -1,0 +1,15 @@
+{
+  "name": "simple-auction",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fadhlan Ridhwanallah",
+  "license": "ISC",
+  "dependencies": {
+    "algosdk": "^1.11.1",
+    "readline": "^1.3.0"
+  }
+}
