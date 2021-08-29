@@ -28,7 +28,7 @@ const userRegistration = async () => {
     algosdk.assignGroupID([initAccountTx, optInTx]);
     const tx = await algodClient.sendRawTransaction(
         [initAccountTx.signTxn(poolAccount.sk), optInTx.signTxn(newAccount.sk)]).do();
-    await waitingForTransaction(tx);
+    await waitingForTransaction(tx.txId);
     console.log("Please store this data safely");
     console.log(`address: ${newAccount.addr}`);
     console.log(`mnemonic: ${algosdk.secretKeyToMnemonic(newAccount.sk)}`);

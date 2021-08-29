@@ -1,3 +1,4 @@
+const issueNFT = require("./commands/issue.nft");
 const userRegistration = require("./commands/user.registration");
 const { scan } = require("./utils/common.util");
 
@@ -8,6 +9,9 @@ const commandFactory = async (input) => {
     switch(commands[0]) {
         case "register":
             await userRegistration();
+            break;
+        case "issue":
+            await issueNFT();
             break;
         case "exit":
             isExit = true;
