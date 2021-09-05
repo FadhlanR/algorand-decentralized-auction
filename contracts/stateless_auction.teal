@@ -1,0 +1,93 @@
+#pragma version 3
+txn Sender
+txn AssetReceiver
+==
+bnz l8
+global GroupSize
+int 1
+-
+gtxnsa ApplicationArgs 0
+byte "claim_nft"
+==
+bnz l7
+global GroupSize
+int 1
+-
+gtxnsa ApplicationArgs 0
+byte "claim_money"
+==
+bnz l6
+global GroupSize
+int 1
+-
+gtxnsa ApplicationArgs 0
+byte "claim_back"
+==
+bnz l5
+err
+l5:
+global GroupSize
+int 1
+-
+gtxns Sender
+txn Receiver
+==
+global GroupSize
+int 1
+-
+gtxns ApplicationID
+int 0
+==
+&&
+txn TypeEnum
+int pay
+==
+&&
+assert
+int 1
+return
+l6:
+global GroupSize
+int 1
+-
+gtxns Sender
+txn Receiver
+==
+global GroupSize
+int 1
+-
+gtxns ApplicationID
+int 0
+==
+&&
+txn TypeEnum
+int pay
+==
+&&
+assert
+int 1
+return
+l7:
+global GroupSize
+int 1
+-
+gtxns Sender
+txn Receiver
+==
+global GroupSize
+int 1
+-
+gtxns ApplicationID
+int 0
+==
+&&
+txn XferAsset
+int 0
+==
+&&
+assert
+int 1
+return
+l8:
+int 1
+return

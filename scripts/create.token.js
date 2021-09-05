@@ -24,7 +24,7 @@ const createToken = async () => {
     );
     const txSigned = createAlgoTrainTokenTx.signTxn(account.sk);
     const tx = await algodClient.sendRawTransaction(txSigned).do();
-    const minedTx = await waitingForTransaction(tx);
+    const minedTx = await waitingForTransaction(tx.txId);
     console.log(minedTx.transaction['created-asset-index']);
 }
 

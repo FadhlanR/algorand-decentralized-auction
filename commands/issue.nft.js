@@ -3,6 +3,9 @@ const algodClient = require("../clients/algod.client");
 const { POOL_MNEMONIC } = require("../constants/common.constant");
 const { waitingForTransaction } = require("../utils/algo.util");
 const { scan } = require("../utils/common.util");
+const sha256 = require('sha256');
+const createHash = require("sha256-uint8array").createHash;
+const CryptoJS = require('crypto-js');
 
 //issue_nft
 //mnemonic
@@ -25,7 +28,9 @@ const issueNFT = async () => {
         undefined,
         params
     );
-
+    let hash   = CryptoJS.SHA256(nftHash);
+    let buffer = Buffer.from(hash.toString(CryptoJS.enc.Hex), 'hex');
+    let array  = new Uint8Array(buffer);
     const secondTx = algosdk.makeAssetCreateTxnWithSuggestedParams(
         userAccount.addr,
         undefined,
@@ -39,14 +44,13 @@ const issueNFT = async () => {
         nftUnitName,
         nftName,
         nftUrl,
-        undefined,
+        array,
         params
     );
-
+    
     algosdk.assignGroupID([firstTX, secondTx]);
     const tx = await algodClient.sendRawTransaction(
         [firstTX.signTxn(poolAccount.sk), secondTx.signTxn(userAccount.sk)]).do();
-    console.log(secondTx.txID());
     const minedTx = await waitingForTransaction(secondTx.txID());
     console.log(`asset id: ${minedTx.transaction['created-asset-index']}`);
 }
