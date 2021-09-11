@@ -1,0 +1,297 @@
+#pragma version 3
+txn ApplicationID
+int 0
+==
+bnz l28
+txn OnCompletion
+int DeleteApplication
+==
+bnz l22
+txn OnCompletion
+int UpdateApplication
+==
+bnz l21
+txn OnCompletion
+int CloseOut
+==
+bnz l13
+txn OnCompletion
+int OptIn
+==
+bnz l12
+txna ApplicationArgs 0
+byte "openAuction"
+==
+bnz l11
+txna ApplicationArgs 0
+byte "depositNFT"
+==
+bnz l10
+txna ApplicationArgs 0
+byte "bid"
+==
+bnz l9
+err
+l9:
+global GroupSize
+int 2
+>=
+assert
+byte "isOpen"
+app_global_get
+assert
+global GroupSize
+int 1
+-
+gtxns Receiver
+byte "statelessAddress"
+app_global_get
+==
+assert
+global GroupSize
+int 1
+-
+gtxns Amount
+byte "bestOffer"
+app_global_get
+>
+assert
+byte "bestOffer"
+global GroupSize
+int 1
+-
+gtxns Amount
+app_global_put
+byte "bestBidder"
+global GroupSize
+int 1
+-
+gtxns Sender
+app_global_put
+byte "totalOffer"
+global GroupSize
+int 1
+-
+gtxns Amount
+byte "totalOffer"
+app_global_get
++
+app_global_put
+int 0
+byte "totalOffer"
+global GroupSize
+int 1
+-
+gtxns Amount
+int 0
+byte "totalOffer"
+app_local_get
++
+app_local_put
+int 1
+return
+l10:
+global GroupSize
+int 2
+>=
+assert
+byte "nftOwner"
+app_global_get
+txn Sender
+==
+assert
+global GroupSize
+int 1
+-
+gtxns Sender
+byte "nftOwner"
+app_global_get
+==
+assert
+global GroupSize
+int 1
+-
+gtxns XferAsset
+byte "nftId"
+app_global_get
+==
+assert
+global GroupSize
+int 1
+-
+gtxns AssetAmount
+int 1
+>=
+assert
+global GroupSize
+int 1
+-
+gtxns AssetReceiver
+byte "statelessAddress"
+app_global_get
+==
+assert
+byte "isOpen"
+int 1
+app_global_put
+int 1
+return
+l11:
+txn NumAppArgs
+int 1
+>=
+assert
+byte "nftOwner"
+app_global_get
+txn Sender
+==
+assert
+byte "statelessAddress"
+txna ApplicationArgs 1
+app_global_put
+int 1
+return
+l12:
+int 0
+byte "totalOffer"
+int 0
+app_local_put
+int 1
+return
+l13:
+txn Sender
+byte "bestBidder"
+app_global_get
+==
+bnz l19
+txn Sender
+byte "bestBidder"
+app_global_get
+!=
+txn Sender
+byte "nftOwner"
+app_global_get
+!=
+&&
+bnz l18
+txn Sender
+byte "nftOwner"
+app_global_get
+==
+bnz l17
+err
+l17:
+byte "isMoneyClaimed"
+app_global_get
+int 1
+==
+assert
+int 1
+return
+l18:
+int 0
+byte "totalOffer"
+app_local_get
+int 0
+<=
+assert
+int 1
+return
+l19:
+byte "isNFTClaimed"
+app_global_get
+int 1
+==
+assert
+int 1
+return
+b l29
+l21:
+int 0
+return
+l22:
+byte "isOpen"
+app_global_get
+int 1
+==
+bnz l26
+byte "isOpen"
+app_global_get
+int 0
+==
+bnz l25
+err
+l25:
+byte "nftOwner"
+app_global_get
+txn Sender
+==
+return
+l26:
+byte "nftOwner"
+app_global_get
+txn Sender
+==
+assert
+byte "isMoneyClaimed"
+app_global_get
+int 1
+==
+assert
+byte "isNFTClaimed"
+app_global_get
+int 1
+==
+assert
+byte "totalOffer"
+app_global_get
+int 0
+<=
+assert
+int 1
+return
+b l29
+l28:
+txn NumAppArgs
+int 3
+==
+assert
+byte "startDate"
+txna ApplicationArgs 0
+btoi
+app_global_put
+byte "endDate"
+txna ApplicationArgs 1
+btoi
+app_global_put
+byte "nftId"
+txna ApplicationArgs 2
+btoi
+app_global_put
+byte "nftOwner"
+txn Sender
+app_global_put
+byte "bestOffer"
+int 0
+app_global_put
+byte "bestBidder"
+global ZeroAddress
+app_global_put
+byte "isOpen"
+int 0
+app_global_put
+byte "isNFTClaimed"
+int 0
+app_global_put
+byte "isMoneyClaimed"
+int 0
+app_global_put
+byte "totalOffer"
+int 0
+app_global_put
+byte "statelessAddress"
+global ZeroAddress
+app_global_put
+int 1
+return
+l29:

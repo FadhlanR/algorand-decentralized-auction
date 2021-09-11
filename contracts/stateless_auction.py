@@ -9,7 +9,7 @@ def contract():
     nft_claim = Seq([Assert(And(
             Txn.receiver() == Gtxn[Global.group_size() - Int(1)].sender(),
             Gtxn[Global.group_size() - Int(1)].application_id() == Int(000000),
-            Txn.xfer_asset() == Int(0000000)
+            Txn.xfer_asset() == Int(111111)
         )),
         Return(Int(1))])
     
@@ -40,6 +40,6 @@ def contract():
 
 
 if __name__ == "__main__":
-    with open('stateless_auction.teal', 'w') as f:
+    with open('./contracts/stateless_auction.teal', 'w') as f:
         compiled = compileTeal(contract(), mode=Mode.Signature, version=3)
         f.write(compiled)

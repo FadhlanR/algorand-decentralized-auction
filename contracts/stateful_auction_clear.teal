@@ -1,0 +1,11 @@
+#pragma version 3
+byte "totalOffer"
+byte "totalOffer"
+app_global_get
+int 0
+byte "totalOffer"
+app_local_get
++
+app_global_put
+int 1
+return
