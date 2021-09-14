@@ -105,10 +105,10 @@ def approval_program():
         # Check the previous transaction in the atomic transaction to ensure
         # the right NFT is being sent to the right address
         Assert(Global.group_size() >= Int(2)),
-        Assert(Gtxn[Global.group_size() - Int(1)].receiver() == Txn.sender()),
-        Assert(Gtxn[Global.group_size() - Int(1)].sender() == App.globalGet(Bytes("statelessAddress"))),
-        Assert(Gtxn[Global.group_size() - Int(1)].xfer_asset() == App.globalGet(Bytes("nftId"))),
-        Assert(Gtxn[Global.group_size() - Int(1)].asset_amount() == Int(1)),
+        Assert(Gtxn[Global.group_size() - Int(2)].receiver() == Txn.sender()),
+        Assert(Gtxn[Global.group_size() - Int(2)].sender() == App.globalGet(Bytes("statelessAddress"))),
+        Assert(Gtxn[Global.group_size() - Int(2)].xfer_asset() == App.globalGet(Bytes("nftId"))),
+        Assert(Gtxn[Global.group_size() - Int(2)].asset_amount() == Int(1)),
 
         # Update global state and return
         App.globalPut(Bytes("isNFTClaimed"), Int(1)),
@@ -126,9 +126,9 @@ def approval_program():
         # Check the previous transaction in the atomic transaction to ensure
         # the right amount is being sent to the right address
         Assert(Global.group_size() >= Int(2)),
-        Assert(Gtxn[Global.group_size() - Int(1)].receiver() == Txn.sender()),
-        Assert(Gtxn[Global.group_size() - Int(1)].sender() == App.globalGet(Bytes("statelessAddress"))),
-        Assert(Gtxn[Global.group_size() - Int(1)].amount() == App.globalGet(Bytes("bestOffer"))),
+        Assert(Gtxn[Global.group_size() - Int(2)].receiver() == Txn.sender()),
+        Assert(Gtxn[Global.group_size() - Int(2)].sender() == App.globalGet(Bytes("statelessAddress"))),
+        Assert(Gtxn[Global.group_size() - Int(2)].amount() == App.globalGet(Bytes("bestOffer"))),
 
         # Update global state and return
         App.globalPut(Bytes("isMoneyClaimed"), Int(1)),
@@ -148,9 +148,9 @@ def approval_program():
         # Check the previous transaction in the atomic transaction to ensure
         # the right amount is being sent to the right address
         Assert(Global.group_size() >= Int(2)),
-        Assert(Gtxn[Global.group_size() - Int(1)].receiver() == Txn.sender()),
-        Assert(Gtxn[Global.group_size() - Int(1)].sender() == App.globalGet(Bytes("statelessAddress"))),
-        Assert(Gtxn[Global.group_size() - Int(1)].amount() == App.localGet(Int(0), Bytes("totalOffer"))),
+        Assert(Gtxn[Global.group_size() - Int(2)].receiver() == Txn.sender()),
+        Assert(Gtxn[Global.group_size() - Int(2)].sender() == App.globalGet(Bytes("statelessAddress"))),
+        Assert(Gtxn[Global.group_size() - Int(2)].amount() == App.localGet(Int(0), Bytes("totalOffer"))),
 
         # Update state and return
         App.globalPut(Bytes("totalOffer"),
@@ -167,15 +167,15 @@ def approval_program():
 
         # Check for zero amount transaction to prevent spamming
         # and the host to pay for transaction fee over and over.
-        Assert(Gtxn[Global.group_size() - Int(1)].amount() != Int(0)),
+        Assert(Gtxn[Global.group_size() - Int(2)].amount() != Int(0)),
 
         # Check the previous transaction in the atomic transaction to ensure
         # the right amount is being sent to the right address
         Assert(Global.group_size() >= Int(2)),
-        Assert(Gtxn[Global.group_size() - Int(1)].receiver() == Txn.sender()),
-        Assert(Gtxn[Global.group_size() - Int(1)].sender() == App.globalGet(Bytes("statelessAddress"))),
+        Assert(Gtxn[Global.group_size() - Int(2)].receiver() == Txn.sender()),
+        Assert(Gtxn[Global.group_size() - Int(2)].sender() == App.globalGet(Bytes("statelessAddress"))),
         Assert(
-            Gtxn[Global.group_size() - Int(1)].amount()
+            Gtxn[Global.group_size() - Int(2)].amount()
             == (App.localGet(Int(0), Bytes("totalOffer")) - App.globalGet(Bytes("bestOffer")))
         ),
 
