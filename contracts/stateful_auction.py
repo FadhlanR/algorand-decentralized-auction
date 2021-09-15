@@ -105,7 +105,7 @@ def approval_program():
         # Check the previous transaction in the atomic transaction to ensure
         # the right NFT is being sent to the right address
         Assert(Global.group_size() >= Int(2)),
-        Assert(Gtxn[Global.group_size() - Int(2)].receiver() == Txn.sender()),
+        Assert(Gtxn[Global.group_size() - Int(2)].asset_receiver() == Txn.sender()),
         Assert(Gtxn[Global.group_size() - Int(2)].sender() == App.globalGet(Bytes("statelessAddress"))),
         Assert(Gtxn[Global.group_size() - Int(2)].xfer_asset() == App.globalGet(Bytes("nftId"))),
         Assert(Gtxn[Global.group_size() - Int(2)].asset_amount() == Int(1)),
