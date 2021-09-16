@@ -182,8 +182,8 @@ def approval_program():
         # Update state and return
         App.globalPut(Bytes("totalOffer"),
                       App.globalGet(Bytes("totalOffer"))
-                      - App.localGet(Int(0), Bytes("totalOffer"))
-                      + App.globalGet(Bytes("bestOffer"))),
+                      + App.globalGet(Bytes("bestOffer"))
+                      - App.localGet(Int(0), Bytes("totalOffer"))),
         App.localPut(Int(0),
                      Bytes("totalOffer"),
                      App.localGet(Int(0), Bytes("totalOffer")) - App.globalGet(Bytes("bestOffer"))),
